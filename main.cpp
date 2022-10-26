@@ -7,12 +7,14 @@ int main()
 {
 	InitWindow(1024, 768, "Moon patrol");
 
+	initCar();
 	while (!WindowShouldClose())
 	{
-		initCar();
 		BeginDrawing();
 		ClearBackground(BLACK);
 		drawCar();
+		moveCar();
+		moveCarForward();
 		EndDrawing();
 	}
 
