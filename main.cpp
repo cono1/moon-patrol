@@ -1,13 +1,18 @@
 #include <raylib.h>
+#include "player.h"
+
+using namespace player;
 
 int main()
 {
-	InitWindow(600, 400, "Moon patrol");
+	InitWindow(1024, 768, "Moon patrol");
 
 	while (!WindowShouldClose())
 	{
+		initCar();
 		BeginDrawing();
-		ClearBackground(RAYWHITE);
+		ClearBackground(BLACK);
+		drawCar();
 		EndDrawing();
 	}
 
