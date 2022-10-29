@@ -3,11 +3,13 @@
 using namespace player;
 
 Rectangle car;
+Vehicle vehicle;
 
 namespace player
 {
 	void initCar()
 	{
+		vehicle.isAlive = true;
 		car.x = 10;
 		car.y = static_cast<float> (GetScreenHeight() / 2 - 50);
 		car.width= 100;

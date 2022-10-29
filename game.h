@@ -3,4 +3,5 @@
 namespace game
 {
 	void checkCollisions();
+	void showFinalMessage();
 }
