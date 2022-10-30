@@ -2,7 +2,26 @@
 
 namespace game
 {
+	struct Asset
+	{
+		float scrollingBack;
+		float scrollingMid;
+		float scrollingFore;
+		Vector2 backgroundA;
+		Vector2 backgroundB;
+		Vector2 midgroundA;
+		Vector2 midgroundB;
+		Vector2 foregroundA;
+		Vector2 foregroundB;
+		Texture2D background;
+		Texture2D midground;
+		Texture2D foreground;
+	};
 	void gameLoop();
+	void initBackground();
+	void drawBackground();
+	void updateParallax();
+	void unloadBackground();
 	void showCredits(Vector2 mousePos, bool& shouldShowMenu, Rectangle backRect);
 	void checkCollisions();
 	void showFinalMessage();

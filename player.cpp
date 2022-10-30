@@ -49,7 +49,6 @@ namespace player
 
 	void attractCarToGround()
 	{
-		//while la pos en y no sobrepase la calle(?
 		if (vehicle.collidingCarBox.y < GetScreenHeight() / 2)
 		{
 			vehicle.collidingCarBox.y += vehicle.gravity * GetFrameTime();
