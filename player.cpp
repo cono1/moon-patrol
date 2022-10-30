@@ -31,7 +31,7 @@ namespace player
 	{
 		if (IsKeyPressed(KEY_UP))
 		{
-			vehicle.collidingCarBox.y -= 200000 * GetFrameTime();
+			vehicle.collidingCarBox.y -= 50000 * GetFrameTime();
 		}
 		if (IsKeyDown(KEY_DOWN))
 		{

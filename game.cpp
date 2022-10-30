@@ -19,7 +19,20 @@ namespace game
 	{
 		//init
 		int version = 2;	
-		InitWindow(1024, 768, "Moon patrol");
+		float scrollingBack = 0.0f;
+		float scrollingMid = 0.0f;
+		float scrollingFore = 0.0f;
+		Vector2 backgroundA;
+		Vector2 backgroundB;
+		Vector2 midgroundA;
+		Vector2 midgroundB;
+		Vector2 foregroundA;
+		Vector2 foregroundB;
+
+		InitWindow(1280, 960, "Moon patrol");
+		Texture2D background = LoadTexture("Assets/backrgroundLayer.png");
+		Texture2D midground = LoadTexture("Assets/midgroundLayer.png");
+		Texture2D foreground = LoadTexture("Assets/foregroundLayer.png");
 		initMenuButtons(menuSize, mainMenu.menuRect, mainMenu.backRect);
 		initCar();
 		initObstacle();
@@ -27,6 +40,38 @@ namespace game
 		while (!WindowShouldClose() && !mainMenu.exitWindow)
 		{
 			mainMenu.mousePos = GetMousePosition();
+			scrollingBack -= 0.1f;
+			scrollingMid -= 0.5f;
+			scrollingFore -= 0.2f;
+
+			backgroundA.x = scrollingBack;
+			backgroundA.y = 20;
+			backgroundB.x = background.width * 2 + scrollingBack;
+			backgroundB.y = 20;
+
+			midgroundA.x = scrollingMid;
+			midgroundA.y = 10;
+			midgroundB.x = midground.width * 2 + scrollingMid;
+			midgroundB.y = 10;
+
+			foregroundA.x = scrollingFore;
+			foregroundA.y = 500;
+			foregroundB.x = foreground.width * 2 + scrollingFore;
+			foregroundB.y = 500;
+
+			if (scrollingBack <= -background.width * 2)
+			{
+				scrollingBack = 0;
+			}
+			if (scrollingMid <= -midground.width * 2)
+			{
+				scrollingMid = 0;
+			}
+			if (scrollingFore <= -foreground.width * 2)
+			{
+				scrollingFore = 0;
+			}
+
 			for (int i = 0; i < menuSize; i++)
 			{
 				if (CheckCollisionPointRec(mainMenu.mousePos, mainMenu.menuRect[i]))
@@ -42,6 +87,15 @@ namespace game
 
 			BeginDrawing();
 			ClearBackground(BLACK);
+			//background
+			DrawTextureEx(background, backgroundA, 0.0f, 2.0f, WHITE);
+			DrawTextureEx(background, backgroundB, 0.0f,2.0f, WHITE);
+
+			DrawTextureEx(midground, midgroundA, 0.0f, 2.0f, WHITE);
+			DrawTextureEx(midground, midgroundB, 0.0f, 2.0f, WHITE);
+
+			DrawTextureEx(foreground, foregroundA, 0.0f, 2.0f, WHITE);
+			DrawTextureEx(foreground, foregroundB, 0.0f, 2.0f, WHITE);
 
 			//menu
 			if (mainMenu.shouldShowMenu)
@@ -117,3 +171,5 @@ namespace game
 		}
 	}
 }
+
+//background:https://opengameart.org/content/simple-forest-parallax-background
