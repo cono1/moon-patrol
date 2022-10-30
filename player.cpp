@@ -2,7 +2,6 @@
 #include "player.h"
 using namespace player;
 
-Rectangle car;
 Vehicle vehicle;
 
 namespace player
@@ -10,39 +9,54 @@ namespace player
 	void initCar()
 	{
 		vehicle.isAlive = true;
-		car.x = 10;
-		car.y = static_cast<float> (GetScreenHeight() / 2 - 50);
-		car.width= 100;
-		car.height= 100;
+		vehicle.collidingCarBox.x = 10;
+		vehicle.collidingCarBox.y = static_cast<float> (GetScreenHeight() / 2 );
+		vehicle.collidingCarBox.width= 100;
+		vehicle.collidingCarBox.height= 100;
+		vehicle.gravity = 90.0f;
+		vehicle.speed = 10000;
 	}
 
 	void drawCar()
 	{
-		DrawRectangle(car.x, car.y, car.width, car.height, DARKPURPLE);
+		DrawRectangle(static_cast<int>(vehicle.collidingCarBox.x), static_cast<int>(vehicle.collidingCarBox.y), static_cast<int>(vehicle.collidingCarBox.width), static_cast<int>(vehicle.collidingCarBox.height), DARKPURPLE);
 	}
 
 	void moveCarForward()
 	{
-		car.x += 20 * GetFrameTime();
+		vehicle.collidingCarBox.x += 20 * GetFrameTime();
 	}
 
 	void moveCar()
 	{
-		if (IsKeyDown(KEY_UP))
+		if (IsKeyPressed(KEY_UP))
 		{
-			car.y = static_cast<float>(GetScreenHeight() / 2 - 200);
+			vehicle.collidingCarBox.y -= 200000 * GetFrameTime();
 		}
 		if (IsKeyDown(KEY_DOWN))
 		{
-			car.y = static_cast<float>(GetScreenHeight() / 2 - 50);
+			//vehicle.collidingCarBox.y = static_cast<float>(GetScreenHeight() / 2 - 50);
 		}
 		if (IsKeyPressed(KEY_LEFT)) // y la esquina izquierda no sobrepasa el borde(?
 		{
-			car.x -=  10000 * GetFrameTime();
+			vehicle.collidingCarBox.x -= vehicle.speed * GetFrameTime();
 		}
 		if (IsKeyPressed(KEY_RIGHT))
 		{
-			car.x += 10000 * GetFrameTime();
+			vehicle.collidingCarBox.x += vehicle.speed * GetFrameTime();
+		}
+	}
+
+	void attractCarToGround()
+	{
+		//while la pos en y no sobrepase la calle(?
+		if (vehicle.collidingCarBox.y < GetScreenHeight() / 2)
+		{
+			vehicle.collidingCarBox.y += vehicle.gravity * GetFrameTime();
+		}
+		if (vehicle.collidingCarBox.y < 0)
+		{
+			vehicle.collidingCarBox.y += vehicle.collidingCarBox.height;
 		}
 	}
 }
