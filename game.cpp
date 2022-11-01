@@ -6,10 +6,12 @@
 #include "game.h"
 #include "player.h"
 #include "obstacles.h"
+#include "bullet.h"
 
 using namespace menu;
 using namespace player;
 using namespace obstacles;
+using namespace bullet;
 
 extern Rectangle obstacle;
 extern Vehicle vehicle;
@@ -36,6 +38,7 @@ namespace game
 		initBackground();
 		initCar();
 		initObstacle();
+		initBullet();
 
 		while (!WindowShouldClose() && !mainMenu.exitWindow)
 		{
@@ -78,6 +81,10 @@ namespace game
 					//obstaculos
 					drawObstacle();
 					moveObstacle();
+
+					//balas
+					drawBullet();
+					moveBullet();
 
 					//mecanicas
 					checkCollisions();
@@ -185,12 +192,12 @@ namespace game
 
 	void checkCollisions()
 	{
-		if (CheckCollisionRecs(vehicle.collidingCarBox, obstacle))
+		if (CheckCollisionRecs(vehicle.collisionCarBox, obstacle))
 		{
 			vehicle.isAlive = false;
 		}
 
-		if (!vehicle.isAlive && obstacle.x < vehicle.collidingCarBox.x )
+		if (!vehicle.isAlive && obstacle.x < vehicle.collisionCarBox.x )
 		{
 			initCar();
 			initObstacle();

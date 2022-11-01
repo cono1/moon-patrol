@@ -39,7 +39,7 @@ namespace menu
 			if (i == 0)
 			{
 				DrawText("PLAY", static_cast<int>(menuRect[i].x + 55), static_cast<int>(menuRect[i].y + 10), 50, BLACK);
-				if (menuMouseHover == 0 && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+				if (menuMouseHover == 0 && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsKeyPressed(KEY_ENTER))
 				{
 					menuOptionSelected = 0;
 					shouldShowMenu = false;

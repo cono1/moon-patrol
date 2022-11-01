@@ -11,57 +11,57 @@ namespace player
 	void initCar()
 	{
 		vehicle.isAlive = true;
-		vehicle.collidingCarBox.x = 10;
-		vehicle.collidingCarBox.y = static_cast<float> (GetScreenHeight() / 2 );
-		vehicle.collidingCarBox.width= 100;
-		vehicle.collidingCarBox.height= 100;
-		vehicle.gravity = 150.0f;
-		vehicle.speed = 15000;
+		vehicle.collisionCarBox.x = 10;
+		vehicle.collisionCarBox.y = static_cast<float> (GetScreenHeight() / 2 );
+		vehicle.collisionCarBox.width= 100;
+		vehicle.collisionCarBox.height= 100;
+		vehicle.gravity = 100.0f;
+		vehicle.speed = 50;
 	}
 
 	void drawCar()
 	{
-		DrawRectangle(static_cast<int>(vehicle.collidingCarBox.x), static_cast<int>(vehicle.collidingCarBox.y), static_cast<int>(vehicle.collidingCarBox.width), static_cast<int>(vehicle.collidingCarBox.height), DARKPURPLE);
+		DrawRectangle(static_cast<int>(vehicle.collisionCarBox.x), static_cast<int>(vehicle.collisionCarBox.y), static_cast<int>(vehicle.collisionCarBox.width), static_cast<int>(vehicle.collisionCarBox.height), DARKPURPLE);
 	}
 
 	void moveCarForward()
 	{
-		vehicle.collidingCarBox.x += 20 * GetFrameTime();
+		vehicle.collisionCarBox.x += 50 * GetFrameTime();
 	}
 
 	void moveCar()
 	{
-		if (IsKeyPressed(KEY_UP))
+		if (IsKeyPressed(KEY_UP) && vehicle.collisionCarBox.y > GetScreenHeight() - 600)
 		{
-			vehicle.collidingCarBox.y -=200000 * GetFrameTime();
-		}
-
-		if (IsKeyDown(KEY_DOWN))
-		{
-			//vehicle.collidingCarBox.y = static_cast<float>(GetScreenHeight() / 2 - 50);
+			vehicle.collisionCarBox.y -= 450000 * GetFrameTime();
 		}
 
 		if (IsKeyPressed(KEY_LEFT)) // y la esquina izquierda no sobrepasa el borde(?
 		{
-			vehicle.collidingCarBox.x -= vehicle.speed * GetFrameTime();
+			vehicle.collisionCarBox.x -= 15000 * GetFrameTime();
 		}
 
 		if (IsKeyPressed(KEY_RIGHT))
 		{
-			vehicle.collidingCarBox.x += vehicle.speed * GetFrameTime();
+			vehicle.collisionCarBox.x += 15000 * GetFrameTime();
+		}
+
+		if(vehicle.collisionCarBox.x >= GetScreenWidth())
+		{
+			vehicle.collisionCarBox.x = 10;
 		}
 	}
 
 	void attractCarToGround()
 	{
-		if (vehicle.collidingCarBox.y < GetScreenHeight() / 2)
+		if (vehicle.collisionCarBox.y < GetScreenHeight() / 2)
 		{
-			vehicle.collidingCarBox.y += vehicle.gravity * GetFrameTime();
+			vehicle.collisionCarBox.y += vehicle.gravity * GetFrameTime();
 		}
 
-		if (vehicle.collidingCarBox.y < 0)
+		if (vehicle.collisionCarBox.y < 0)
 		{
-			vehicle.collidingCarBox.y += vehicle.collidingCarBox.height;
+			vehicle.collisionCarBox.y += vehicle.collisionCarBox.height;
 		}
 	}
 }

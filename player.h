@@ -5,7 +5,7 @@ namespace player
 {
 	struct Vehicle
 	{
-		Rectangle collidingCarBox;
+		Rectangle collisionCarBox;
 		bool isAlive;
 		float gravity;
 		int speed;
