@@ -1,5 +1,7 @@
 #include <iostream>
+
 #include "player.h"
+
 using namespace player;
 
 Vehicle vehicle;
@@ -13,8 +15,8 @@ namespace player
 		vehicle.collidingCarBox.y = static_cast<float> (GetScreenHeight() / 2 );
 		vehicle.collidingCarBox.width= 100;
 		vehicle.collidingCarBox.height= 100;
-		vehicle.gravity = 90.0f;
-		vehicle.speed = 10000;
+		vehicle.gravity = 150.0f;
+		vehicle.speed = 15000;
 	}
 
 	void drawCar()
@@ -31,16 +33,19 @@ namespace player
 	{
 		if (IsKeyPressed(KEY_UP))
 		{
-			vehicle.collidingCarBox.y -= 50000 * GetFrameTime();
+			vehicle.collidingCarBox.y -=200000 * GetFrameTime();
 		}
+
 		if (IsKeyDown(KEY_DOWN))
 		{
 			//vehicle.collidingCarBox.y = static_cast<float>(GetScreenHeight() / 2 - 50);
 		}
+
 		if (IsKeyPressed(KEY_LEFT)) // y la esquina izquierda no sobrepasa el borde(?
 		{
 			vehicle.collidingCarBox.x -= vehicle.speed * GetFrameTime();
 		}
+
 		if (IsKeyPressed(KEY_RIGHT))
 		{
 			vehicle.collidingCarBox.x += vehicle.speed * GetFrameTime();
@@ -53,6 +58,7 @@ namespace player
 		{
 			vehicle.collidingCarBox.y += vehicle.gravity * GetFrameTime();
 		}
+
 		if (vehicle.collidingCarBox.y < 0)
 		{
 			vehicle.collidingCarBox.y += vehicle.collidingCarBox.height;

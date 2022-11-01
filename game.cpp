@@ -1,5 +1,7 @@
 #include <iostream>
-#include <raylib.h>
+
+#include "raylib.h"
+
 #include "menu.h"
 #include "game.h"
 #include "player.h"
@@ -15,6 +17,15 @@ Menu mainMenu;
 
 namespace game
 {
+	//declaraciones
+	void initBackground();
+	void drawBackground();
+	void updateParallax();
+	void unloadBackground();
+	void showCredits(Vector2 mousePos, bool& shouldShowMenu, Rectangle backRect);
+	void checkCollisions();
+	void showFinalMessage();
+
 	Asset asset;
 	void gameLoop()
 	{
@@ -118,9 +129,9 @@ namespace game
 
 	void updateParallax()
 	{
-		asset.scrollingBack -= 0.1f;
-		asset.scrollingMid -= 0.5f;
-		asset.scrollingFore -= 0.2f;
+		asset.scrollingBack -= 90.f * GetFrameTime();
+		asset.scrollingMid -= 50.f * GetFrameTime();
+		asset.scrollingFore -= 20.f * GetFrameTime();
 
 		asset.backgroundA.x = asset.scrollingBack;
 		asset.backgroundA.y = 20;
@@ -141,10 +152,12 @@ namespace game
 		{
 			asset.scrollingBack = 0;
 		}
+
 		if (asset.scrollingMid <= -asset.midground.width * 2)
 		{
 			asset.scrollingMid = 0;
 		}
+
 		if (asset.scrollingFore <= -asset.foreground.width * 2)
 		{
 			asset.scrollingFore = 0;
@@ -175,6 +188,12 @@ namespace game
 		if (CheckCollisionRecs(vehicle.collidingCarBox, obstacle))
 		{
 			vehicle.isAlive = false;
+		}
+
+		if (!vehicle.isAlive && obstacle.x < vehicle.collidingCarBox.x )
+		{
+			initCar();
+			initObstacle();
 		}
 	}
 

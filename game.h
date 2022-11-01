@@ -18,11 +18,5 @@ namespace game
 		Texture2D foreground;
 	};
 	void gameLoop();
-	void initBackground();
-	void drawBackground();
-	void updateParallax();
-	void unloadBackground();
-	void showCredits(Vector2 mousePos, bool& shouldShowMenu, Rectangle backRect);
-	void checkCollisions();
-	void showFinalMessage();
+
 }
