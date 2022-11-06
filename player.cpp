@@ -15,8 +15,9 @@ namespace player
 		vehicle.collisionCarBox.y = static_cast<float> (GetScreenHeight() / 2 );
 		vehicle.collisionCarBox.width= 100;
 		vehicle.collisionCarBox.height= 100;
-		vehicle.gravity = 100.0f;
 		vehicle.speed = 50;
+		vehicle.gravity = 100.0f;
+		vehicle.upMovement = 50000.f;
 	}
 
 	void drawCar()
@@ -33,10 +34,10 @@ namespace player
 	{
 		if (IsKeyPressed(KEY_UP) && vehicle.collisionCarBox.y > GetScreenHeight() - 600)
 		{
-			vehicle.collisionCarBox.y -= 450000 * GetFrameTime();
+			vehicle.collisionCarBox.y -= vehicle.upMovement * GetFrameTime();
 		}
 
-		if (IsKeyPressed(KEY_LEFT)) // y la esquina izquierda no sobrepasa el borde(?
+		if (IsKeyPressed(KEY_LEFT) && vehicle.collisionCarBox.x > 5)
 		{
 			vehicle.collisionCarBox.x -= 15000 * GetFrameTime();
 		}

@@ -83,6 +83,7 @@ namespace game
 					moveObstacle();
 
 					//balas
+					updateBullet();		
 					drawBullet();
 					moveBullet();
 

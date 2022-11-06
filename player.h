@@ -7,8 +7,9 @@ namespace player
 	{
 		Rectangle collisionCarBox;
 		bool isAlive;
-		float gravity;
 		int speed;
+		float gravity;
+		float upMovement;
 	};
 	void initCar();
 	void drawCar();

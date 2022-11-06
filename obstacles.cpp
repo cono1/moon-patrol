@@ -9,7 +9,7 @@ namespace obstacles
 	void initObstacle()
 	{
 		obstacle.x = static_cast<float> (GetScreenWidth());
-		obstacle.y = static_cast<float> (GetScreenHeight() / 2 + 60);
+		obstacle.y = static_cast<float> (GetScreenHeight() / 2 + 85);
 		obstacle.width = 15;
 		obstacle.height = 15;
 	}

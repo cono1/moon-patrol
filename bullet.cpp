@@ -9,33 +9,48 @@ extern Vehicle vehicle;
 
 namespace bullet
 {
-	Bullet horizontalBullet;
+	Bullet verticalBullet;
 
 	void initBullet()
-    { 
-		horizontalBullet.isAlive = true;
-		horizontalBullet.collisionBulletBox.width = 10;
-		horizontalBullet.collisionBulletBox.height = 5;
-		horizontalBullet.collisionBulletBox.x = vehicle.collisionCarBox.x + vehicle.collisionCarBox.width + horizontalBullet.collisionBulletBox.width;
-		horizontalBullet.collisionBulletBox.y = vehicle.collisionCarBox.y + 60;
+	{
+		verticalBullet.isAlive = false;
+		verticalBullet.speed = 500;
+		verticalBullet.collisionBulletBox.width = 10;
+		verticalBullet.collisionBulletBox.height = 5;
+		verticalBullet.collisionBulletBox.x = vehicle.collisionCarBox.x + vehicle.collisionCarBox.width / 2;
+		verticalBullet.collisionBulletBox.y = vehicle.collisionCarBox.y;
+	}
+
+	void updateBullet()
+	{
+		if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && !verticalBullet.isAlive)
+		{
+			verticalBullet.isAlive = true;
+			verticalBullet.collisionBulletBox.x = vehicle.collisionCarBox.x + vehicle.collisionCarBox.width / 2;
+			verticalBullet.collisionBulletBox.y = vehicle.collisionCarBox.y;
+		}
+
+		if (verticalBullet.collisionBulletBox.y < 0)
+		{
+			verticalBullet.isAlive = false;
+		}
 	}
 
 	void drawBullet()
 	{
-		//if bullet is alive
-		if (horizontalBullet.isAlive)
+		if (verticalBullet.isAlive)
 		{
-			DrawRectangle(static_cast<int>(horizontalBullet.collisionBulletBox.x), static_cast<int>(horizontalBullet.collisionBulletBox.y), static_cast<int>(horizontalBullet.collisionBulletBox.width), static_cast<int>(horizontalBullet.collisionBulletBox.height), WHITE);		
+			DrawRectangle(static_cast<int>(verticalBullet.collisionBulletBox.x), static_cast<int>(verticalBullet.collisionBulletBox.y), static_cast<int>(verticalBullet.collisionBulletBox.width), static_cast<int>(verticalBullet.collisionBulletBox.height), WHITE);
 		}
 	}
 
 	void moveBullet()
 	{
-		horizontalBullet.collisionBulletBox.x += 100 * GetFrameTime();
-		if (horizontalBullet.collisionBulletBox.x > GetScreenWidth())
+		if (!verticalBullet.isAlive)
 		{
-			horizontalBullet.isAlive = false;
+			return;
 		}
-	}
 
+		verticalBullet.collisionBulletBox.y -= verticalBullet.speed * GetFrameTime();
+	}
 }
