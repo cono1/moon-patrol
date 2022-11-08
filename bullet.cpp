@@ -1,6 +1,6 @@
-#include "bullet.h"
-
 #include <iostream>
+
+#include "bullet.h"
 #include "player.h"
 
 using namespace player;

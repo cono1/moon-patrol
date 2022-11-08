@@ -2,8 +2,8 @@
 
 #include "raylib.h"
 
-#include "menu.h"
 #include "game.h"
+#include "menu.h"
 #include "player.h"
 #include "obstacles.h"
 #include "bullet.h"
