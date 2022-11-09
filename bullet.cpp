@@ -3,14 +3,14 @@
 #include "bullet.h"
 #include "player.h"
 
+using namespace bullet;
 using namespace player;
 
 extern Vehicle vehicle;
+Bullet verticalBullet;
 
 namespace bullet
 {
-	Bullet verticalBullet;
-
 	void initBullet()
 	{
 		verticalBullet.isAlive = false;

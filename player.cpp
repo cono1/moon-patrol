@@ -15,7 +15,7 @@ namespace player
 		vehicle.collisionCarBox.y = static_cast<float> (GetScreenHeight() / 2 );
 		vehicle.collisionCarBox.width= 100;
 		vehicle.collisionCarBox.height= 100;
-		vehicle.speed = 50;
+		vehicle.speed = 20;
 		vehicle.gravity = 100.0f;
 		vehicle.upMovement = 50000.f;
 	}
@@ -27,7 +27,7 @@ namespace player
 
 	void moveCarForward()
 	{
-		vehicle.collisionCarBox.x += 50 * GetFrameTime();
+		vehicle.collisionCarBox.x += vehicle.speed * GetFrameTime();
 	}
 
 	void moveCar()

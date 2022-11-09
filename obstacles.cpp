@@ -5,17 +5,20 @@
 
 using namespace obstacles;
 
-Rectangle obstacle;
+Obstacle obstacle;
+Rectangle collisionObstacleBox;
 Rectangle aerealEnemy;
 
 namespace obstacles
 {
 	void initObstacle()
 	{
-		obstacle.x = static_cast<float> (GetScreenWidth());
-		obstacle.y = static_cast<float> (GetScreenHeight() / 2 + 85);
-		obstacle.width = 15;
-		obstacle.height = 15;
+		obstacle.speed = 500;
+		obstacle.waitTime = 0;
+		collisionObstacleBox.x = static_cast<float> (GetScreenWidth());
+		collisionObstacleBox.y = static_cast<float> (GetScreenHeight() / 2 + 85);
+		collisionObstacleBox.width = 15;
+		collisionObstacleBox.height = 15;
 
 		aerealEnemy.x = 10;
 		aerealEnemy.y = 200;
@@ -25,16 +28,22 @@ namespace obstacles
 
 	void drawObstacle()
 	{
-		DrawRectangle(static_cast<int>(obstacle.x), static_cast<int>(obstacle.y), static_cast<int>(obstacle.width), static_cast<int>(obstacle.height), YELLOW);
+		DrawRectangle(static_cast<int>(collisionObstacleBox.x), static_cast<int>(collisionObstacleBox.y), static_cast<int>(collisionObstacleBox.width), static_cast<int>(collisionObstacleBox.height), YELLOW);
 		DrawRectangle(static_cast<int>(aerealEnemy.x), static_cast<int>(aerealEnemy.y), static_cast<int>(aerealEnemy.width), static_cast<int>(aerealEnemy.height), YELLOW);
 	}
 
 	void moveObstacle()
 	{
-		obstacle.x -= 100 * GetFrameTime();
-		if (obstacle.x < 0)
+		obstacle.waitTime++;
+		if (obstacle.waitTime > 800)
 		{
-			obstacle.x = static_cast<float> (GetScreenWidth());
+			collisionObstacleBox.x -= obstacle.speed * GetFrameTime();
+		}
+
+		if (collisionObstacleBox.x < 0 && obstacle.waitTime > 10000)
+		{
+			collisionObstacleBox.x = static_cast<float> (GetScreenWidth());
+			obstacle.waitTime = 0;
 		}
 
 		aerealEnemy.x += 10 * GetFrameTime(); //50  10

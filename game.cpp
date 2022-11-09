@@ -13,8 +13,10 @@ using namespace player;
 using namespace obstacles;
 using namespace bullet;
 
-extern Rectangle obstacle;
+extern Rectangle collisionObstacleBox;
+extern Rectangle aerealEnemy;
 extern Vehicle vehicle;
+extern Bullet verticalBullet;
 Menu mainMenu;
 
 namespace game
@@ -25,14 +27,17 @@ namespace game
 	void updateParallax();
 	void unloadBackground();
 	void showCredits(Vector2 mousePos, bool& shouldShowMenu, Rectangle backRect);
-	void checkCollisions();
-	void showFinalMessage();
+	void checkCollisions(bool& isEnemyDestroyed);
+	void updateScore(bool& isEnemyDestroyed, int& score);
+	void showFinalMessage(int score);
 
 	Asset asset;
 	void gameLoop()
 	{
 		//init
 		int version = 2;
+		int score = 0;
+		bool isEnemyDestroyed = false;
 		InitWindow(1280, 960, "Moon patrol");
 		initMenuButtons(menuSize, mainMenu.menuRect, mainMenu.backRect);
 		initBackground();
@@ -71,31 +76,54 @@ namespace game
 				switch (mainMenu.menuOptionSelected)
 				{
 				case 0: //play
-					SetExitKey(0);
-					//auto
-					drawCar();
-					moveCar();
-					moveCarForward();
-					attractCarToGround();
-
-					//obstaculos
-					drawObstacle();
-					moveObstacle();
-
-					//balas
-					updateBullet();		
-					drawBullet();
-					moveBullet();
-
-					//mecanicas
-					checkCollisions();
-					showFinalMessage();
-					DrawText(TextFormat("V: %02i", version), GetScreenWidth() - 100, GetScreenHeight() - 70, 30, WHITE);
-
-					drawBackMenuButton(mainMenu.mousePos, mainMenu.shouldShowMenu, mainMenu.backRect);
-					if (IsKeyPressed(KEY_ESCAPE))
+					if (vehicle.isAlive)
 					{
-						mainMenu.shouldShowMenu = true;
+						SetExitKey(0);
+						//auto
+						drawCar();
+						moveCar();
+						moveCarForward();
+						attractCarToGround();
+
+						//obstaculos
+						drawObstacle();
+						moveObstacle();
+
+						//balas
+						updateBullet();
+						drawBullet();
+						moveBullet();
+
+						//mecanicas
+						checkCollisions(isEnemyDestroyed);
+						updateScore(isEnemyDestroyed, score);
+						DrawText(TextFormat("V: %02i", version), GetScreenWidth() - 100, GetScreenHeight() - 70, 30, WHITE);
+
+						drawBackMenuButton(mainMenu.mousePos, mainMenu.shouldShowMenu, mainMenu.backRect);
+						if (IsKeyPressed(KEY_ESCAPE))
+						{
+							mainMenu.shouldShowMenu = true;
+						}
+					}
+					else
+					{
+						showFinalMessage(score);
+						if (IsKeyPressed(KEY_ENTER))
+						{
+							score = 0;
+							initCar();
+							initObstacle();
+							initBullet();
+						}
+
+						if (IsKeyPressed(KEY_ESCAPE))
+						{
+							score = 0;
+							initCar();
+							initObstacle();
+							initBullet();
+							mainMenu.shouldShowMenu = true;
+						}
 					}
 					break;
 				case 1: //credits
@@ -191,25 +219,50 @@ namespace game
 		}
 	}
 
-	void checkCollisions()
+	void checkCollisions(bool &isEnemyDestroyed)
 	{
-		if (CheckCollisionRecs(vehicle.collisionCarBox, obstacle))
+		if (CheckCollisionRecs(vehicle.collisionCarBox, collisionObstacleBox)) //auto y obstaculo
 		{
 			vehicle.isAlive = false;
 		}
 
-		if (!vehicle.isAlive && obstacle.x < vehicle.collisionCarBox.x )
+		if (!vehicle.isAlive && collisionObstacleBox.x < vehicle.collisionCarBox.x )
 		{
 			initCar();
 			initObstacle();
 		}
+
+		if (CheckCollisionRecs(vehicle.collisionCarBox, aerealEnemy)) //auto y enemigo
+		{
+			std::cout << "colision";
+		}
+
+		if (CheckCollisionRecs(aerealEnemy, verticalBullet.collisionBulletBox)) //enemigo y bala
+		{
+			isEnemyDestroyed = true;
+			verticalBullet.collisionBulletBox.y -= 100;
+			std::cout << "shot\n";
+		}
 	}
 
-	void showFinalMessage()
+	void updateScore(bool& isEnemyDestroyed, int& score)
+	{
+		DrawText(TextFormat("score: %i ", score), GetScreenWidth()-300, 10, 50, WHITE);
+		if (isEnemyDestroyed)
+		{
+			score += 100;
+			isEnemyDestroyed = false;
+		}
+	}
+
+	void showFinalMessage(int score)
 	{
 		if (!vehicle.isAlive)
 		{
-			DrawText("You loose", 300, 250, 90, RAYWHITE);
+			DrawText("You loose", 370, 250, 90, RAYWHITE);
+			DrawText(TextFormat("Your score was: %i ", score), 270, 400, 70, WHITE);
+			DrawText("Press enter to play again\n \t\t\t\t\t\t\t\t\tor\nescape to go back to menu", 400, 650, 30, RAYWHITE);
+
 		}
 	}
 }
